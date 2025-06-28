@@ -9,7 +9,7 @@ if not os.environ.get("FASTAPI_STARTED"):
     os.environ["FASTAPI_STARTED"] = "1"
     subprocess.Popen(["uvicorn", "fastapi_app:app", "--host", "0.0.0.0", "--port", "8000"])
 # FastAPI URL
-API_URL = "https://ai-agent1.streamlit.app"
+API_URL = "https://tailortalk-internship-production.up.railway.app"
 
 
 # Initialize chat history
