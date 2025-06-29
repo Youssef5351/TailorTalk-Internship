@@ -22,13 +22,12 @@ def get_calendar_service():
             creds = pickle.load(token)
 
     # If no token, or expired:
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'client_secret_519923168605-78rafrd8fqqe5eli0se7se6cti17m0ou.apps.googleusercontent.com.json', SCOPES)
-            creds = flow.run_local_server(port=8080)
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                raise RuntimeError("Google credentials missing in deployment. Upload token.pickle.")
+
 
         # Save token
         with open('token.pickle', 'wb') as token:
