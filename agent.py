@@ -239,13 +239,6 @@ def parse_message(state: AgentState) -> AgentState:
                 "conversation_state": "initial"
             })
     
-    elif intent == "reject_suggestion":
-        return {
-            **state,
-            "intent": "reject_suggestion",
-            "conversation_state": "rejected"
-        }
-    
     elif intent == "book":
         # Try to parse datetime
         dt = None
@@ -265,29 +258,28 @@ def parse_message(state: AgentState) -> AgentState:
                 break
         
         # If dateparser fails, try manual parsing
-    if not dt:
-        # Check for specific "next [date]" pattern first
-        next_specific_date = parse_next_specific_date(message)
-        if next_specific_date:
-            time_only = parse_time_manually(message)
-            if time_only:
-                dt = datetime.combine(next_specific_date, time_only.time())
-            else:
-                vague_time = extract_time_of_day(message)
-                if vague_time:
-                    dt = datetime.combine(next_specific_date, vague_time)
+        if not dt:
+            # Check for specific "next [date]" pattern first
+            next_specific_date = parse_next_specific_date(message)
+            if next_specific_date:
+                time_only = parse_time_manually(message)
+                if time_only:
+                    dt = datetime.combine(next_specific_date, time_only.time())
                 else:
-                    dt = datetime.combine(next_specific_date, time(hour=9, minute=0))
-            print(f"Parsed next-specific date: {dt}")
-            return {
-                **state,
-                "proposed_start": dt,
-                "proposed_end": dt + timedelta(minutes=30),
-                "intent": "book",
-                "conversation_state": "checking"
-            }
-        
-        # Check for vague time phrases
+                    vague_time = extract_time_of_day(message)
+                    if vague_time:
+                        dt = datetime.combine(next_specific_date, vague_time)
+                    else:
+                        dt = datetime.combine(next_specific_date, time(hour=9, minute=0))
+                print(f"Parsed next-specific date: {dt}")
+                return {
+                    **state,
+                    "proposed_start": dt,
+                    "proposed_end": dt + timedelta(minutes=30),
+                    "intent": "book",
+                    "conversation_state": "checking"
+                }
+                    # Check for vague time phrases
         vague_time = extract_time_of_day(message)
         if vague_time:
             now = datetime.now()
