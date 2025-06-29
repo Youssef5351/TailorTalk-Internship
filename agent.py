@@ -434,7 +434,13 @@ def suggest_alternatives(state: AgentState) -> AgentState:
 def fallback(state: AgentState) -> AgentState:
     message = state.get("message", "")
     intent = state.get("intent", "")
-    
+    message = state.get("message", "").strip().lower()
+    if message in ["hi", "hello", "hey"]:
+        return {
+            **state,
+            "reply": "Hi there! Let me know if you'd like to book a call. For example, you can say 'Book me a call tomorrow at 3pm.'",
+            "conversation_state": "initial"
+        }
     if intent == "unknown":
         if any(word in message.lower() for word in [
             "tomorrow", "today", "next week",
