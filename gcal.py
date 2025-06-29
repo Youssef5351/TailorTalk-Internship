@@ -16,25 +16,27 @@ _service = None
 def get_calendar_service():
     creds = None
 
-    # Load token if exists
+    # Load token if it exists
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
 
-    # If no token, or expired:
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                raise RuntimeError("Google credentials missing in deployment. Upload token.pickle.")
+    # If no token or expired:
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            raise RuntimeError(
+                "Google credentials missing in deployment. Upload token.pickle."
+            )
 
-
-        # Save token
+        # Save token (only if refreshed)
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
     return service
+
 
 
 def check_availability(start_time, end_time):
