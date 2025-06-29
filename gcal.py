@@ -102,7 +102,6 @@ def create_event(start_time, end_time, summary="Meeting with AI Bot", guest_emai
     """
     service = get_calendar_service()
     
-    # Ensure datetime objects have timezone info
     cairo_tz = ZoneInfo("Africa/Cairo")
     
     # If datetime is naive (no timezone), assume it's in Cairo timezone
