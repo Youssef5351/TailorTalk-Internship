@@ -13,7 +13,7 @@ API_URL = "https://tailortalk-internship-production.up.railway.app/chat"
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
-st.title("🤖 TailorTalk AI Booking Agent")
+st.title("🤖 Youssef Elkoumi AI Booking Agent")
 
 st.write("Chat with me to book meetings in your calendar!")
 
