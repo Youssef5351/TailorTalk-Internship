@@ -438,7 +438,7 @@ def fallback(state: AgentState) -> AgentState:
     if message in ["hi", "hello", "hey"]:
         return {
             **state,
-            "reply": "Hi there! Let me know if you'd like to book a call. For example, you can say 'Book me a call tomorrow at 3pm.'",
+            "reply": "Hi there! When would you like to book your appointment?",
             "conversation_state": "initial"
         }
     if intent == "unknown":
